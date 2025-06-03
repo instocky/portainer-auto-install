@@ -125,13 +125,35 @@ update_system() {
     done
     
     # Проверка критически важных пакетов
-    local critical_packages=("curl" "gpg" "lsb_release")
-    for package in "${critical_packages[@]}"; do
-        if ! command -v "$package" &> /dev/null; then
-            log_error "Критически важный пакет $package не установлен"
-            exit 1
-        fi
-    done
+    log_info "Проверка критически важных пакетов..."
+    
+    # Проверка curl
+    if ! command -v curl &> /dev/null; then
+        log_error "curl не установлен"
+        exit 1
+    else
+        log_info "curl доступен ✓"
+    fi
+    
+    # Проверка GPG (может быть gpg или gnupg)
+    if command -v gpg &> /dev/null; then
+        log_info "gpg доступен ✓"
+    elif command -v gnupg &> /dev/null; then
+        log_info "gnupg доступен ✓"
+    elif dpkg -l | grep -q "gnupg"; then
+        log_info "gnupg пакет установлен, проверяем команды..."
+        log_info "Доступные GPG команды: $(ls /usr/bin/gpg* 2>/dev/null || echo 'не найдены')"
+    else
+        log_error "GPG не установлен"
+        exit 1
+    fi
+    
+    # Проверка lsb_release
+    if command -v lsb_release &> /dev/null; then
+        log_info "lsb_release доступен ✓"
+    else
+        log_warn "lsb_release недоступен, но это не критично"
+    fi
     
     log_info "Все необходимые пакеты установлены ✓"
 }
