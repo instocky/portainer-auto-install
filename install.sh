@@ -284,39 +284,40 @@ configure_firewall() {
     UFW_STATUS=$(ufw status | head -n1)
     
     if echo "$UFW_STATUS" | grep -q "Status: inactive"; then
-        log_warn "UFW выключен"
-        read -p "Включить UFW firewall? (рекомендуется) (Y/n): " -n 1 -r
-        echo
-        if [[ ! $REPLY =~ ^[Nn]$ ]]; then
-            log_info "Настройка базовых правил UFW..."
-            
-            # Базовые правила безопасности
-            ufw --force reset > /dev/null 2>&1
-            ufw default deny incoming
-            ufw default allow outgoing
-            
-            # SSH доступ (обязательно для удаленного управления)
-            SSH_PORT=$(ss -tlnp | grep sshd | grep -o ':\([0-9]*\)' | head -n1 | cut -d: -f2)
-            if [[ -n "$SSH_PORT" ]]; then
-                ufw allow "$SSH_PORT"/tcp comment "SSH"
-                log_info "SSH порт $SSH_PORT разрешен ✓"
-            else
-                ufw allow 22/tcp comment "SSH"
-                log_info "SSH порт 22 разрешен ✓"
-            fi
-            
-            # Portainer порты
-            ufw allow 9000/tcp comment "Portainer HTTP"
-            ufw allow 9443/tcp comment "Portainer HTTPS"
-            ufw allow 8000/tcp comment "Portainer Edge Agent"
-            
-            # Включение UFW
-            ufw --force enable
-            log_info "UFW включен с правилами для Portainer ✓"
-        else
-            log_info "UFW остается выключенным"
+        # Проверка переменной окружения для отключения автоматического включения
+        if [[ "${SKIP_UFW:-no}" == "yes" ]]; then
+            log_warn "UFW остается выключенным (SKIP_UFW=yes)"
             return
         fi
+        
+        log_info "UFW выключен. Включаем автоматически для безопасности..."
+        log_info "(Для отключения используйте: SKIP_UFW=yes)"
+        
+        log_info "Настройка базовых правил UFW..."
+        
+        # Базовые правила безопасности
+        ufw --force reset > /dev/null 2>&1
+        ufw default deny incoming
+        ufw default allow outgoing
+        
+        # SSH доступ (обязательно для удаленного управления)
+        SSH_PORT=$(ss -tlnp | grep sshd | grep -o ':\([0-9]*\)' | head -n1 | cut -d: -f2)
+        if [[ -n "$SSH_PORT" ]]; then
+            ufw allow "$SSH_PORT"/tcp comment "SSH"
+            log_info "SSH порт $SSH_PORT разрешен ✓"
+        else
+            ufw allow 22/tcp comment "SSH"
+            log_info "SSH порт 22 разрешен ✓"
+        fi
+        
+        # Portainer порты
+        ufw allow 9000/tcp comment "Portainer HTTP"
+        ufw allow 9443/tcp comment "Portainer HTTPS"
+        ufw allow 8000/tcp comment "Portainer Edge Agent"
+        
+        # Включение UFW
+        ufw --force enable
+        log_info "UFW включен с правилами для Portainer ✓"
     elif echo "$UFW_STATUS" | grep -q "Status: active"; then
         log_info "UFW уже активен"
         

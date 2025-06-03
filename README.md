@@ -4,14 +4,20 @@
 
 ## 🚀 Быстрая установка
 
-### Одной командой:
+### Автоматическая установка (рекомендуется):
 ```bash
-curl -sSL https://raw.githubusercontent.com/instocky/portainer-auto-install/main/install.sh | sudo bash
+curl -sSL https://raw.githubusercontent.com/USERNAME/portainer-auto-install/main/install.sh | sudo bash
+```
+
+### С дополнительными параметрами:
+```bash
+# Отключить автоматическое включение UFW firewall
+SKIP_UFW=yes curl -sSL https://raw.githubusercontent.com/USERNAME/portainer-auto-install/main/install.sh | sudo bash
 ```
 
 ### Или скачать и запустить:
 ```bash
-wget https://raw.githubusercontent.com/instocky/portainer-auto-install/main/install.sh
+wget https://raw.githubusercontent.com/USERNAME/portainer-auto-install/main/install.sh
 chmod +x install.sh
 sudo ./install.sh
 ```
