@@ -57,9 +57,11 @@ sudo ./install.sh
 
 После успешной установки Portainer будет доступен по адресам:
 
-- **HTTP**: `http://YOUR_SERVER_IP:9000`
-- **HTTPS**: `https://YOUR_SERVER_IP:9443`
+- **HTTP** (рекомендуется для начала): `http://YOUR_SERVER_IP:9000`
+- **HTTPS** (требует подтверждения в браузере): `https://YOUR_SERVER_IP:9443`
 - **Edge Agent**: `http://YOUR_SERVER_IP:8000`
+
+⚠️ **Важно по HTTPS**: Portainer использует самоподписанный сертификат, поэтому браузер покажет предупреждение о безопасности. Нажмите "Дополнительно" → "Перейти на сайт" для продолжения.
 
 ### Первоначальная настройка:
 
@@ -103,7 +105,21 @@ docker run -d -p 8080:9000 --name portainer --restart=always \
   portainer/portainer-ce
 ```
 
-2. **Настроить SSL сертификат** для HTTPS доступа
+2. **Настроить SSL сертификат** для HTTPS доступа:
+```bash
+# Для доменного имени с Let's Encrypt
+sudo apt install certbot
+sudo certbot certonly --standalone -d your-domain.com
+
+# Обновить Portainer с правильными сертификатами
+docker stop portainer
+docker rm portainer
+docker run -d -p 9000:9000 -p 9443:9443 --name portainer --restart=always \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v portainer_data:/data \
+  -v /etc/letsencrypt/live/your-domain.com:/certs \
+  portainer/portainer-ce --sslcert /certs/fullchain.pem --sslkey /certs/privkey.pem
+```
 
 3. **Ограничить доступ** через firewall:
 ```bash
