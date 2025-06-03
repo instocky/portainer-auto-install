@@ -56,3 +56,6 @@ docker-compose.override.yml
 # Local configuration overrides
 local_config.sh
 local_settings.conf
+
+# Users
+notes.md
