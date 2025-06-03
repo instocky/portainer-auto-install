@@ -6,18 +6,18 @@
 
 ### Автоматическая установка (рекомендуется):
 ```bash
-curl -sSL https://raw.githubusercontent.com/USERNAME/portainer-auto-install/main/install.sh | sudo bash
+curl -sSL https://raw.githubusercontent.com/instocky/portainer-auto-install/main/install.sh | sudo bash
 ```
 
 ### С дополнительными параметрами:
 ```bash
 # Отключить автоматическое включение UFW firewall
-SKIP_UFW=yes curl -sSL https://raw.githubusercontent.com/USERNAME/portainer-auto-install/main/install.sh | sudo bash
+SKIP_UFW=yes curl -sSL https://raw.githubusercontent.com/instocky/portainer-auto-install/main/install.sh | sudo bash
 ```
 
 ### Или скачать и запустить:
 ```bash
-wget https://raw.githubusercontent.com/USERNAME/portainer-auto-install/main/install.sh
+wget https://raw.githubusercontent.com/instocky/portainer-auto-install/main/install.sh
 chmod +x install.sh
 sudo ./install.sh
 ```
@@ -169,19 +169,19 @@ portainer-auto-install/
 
 ### Проверка системы перед установкой:
 ```bash
-curl -sSL https://raw.githubusercontent.com/USERNAME/portainer-auto-install/main/scripts/check-system.sh | bash
+curl -sSL https://raw.githubusercontent.com/instocky/portainer-auto-install/main/scripts/check-system.sh | bash
 ```
 
 ### Создание резервной копии:
 ```bash
-wget https://raw.githubusercontent.com/USERNAME/portainer-auto-install/main/scripts/backup.sh
+wget https://raw.githubusercontent.com/instocky/portainer-auto-install/main/scripts/backup.sh
 chmod +x backup.sh
 sudo ./backup.sh
 ```
 
 ### Обновление Portainer:
 ```bash
-wget https://raw.githubusercontent.com/USERNAME/portainer-auto-install/main/scripts/update.sh
+wget https://raw.githubusercontent.com/instocky/portainer-auto-install/main/scripts/update.sh
 chmod +x update.sh
 sudo ./update.sh
 ```
@@ -210,6 +210,6 @@ MIT License - можете свободно использовать и моди
 
 ---
 
-**Автор**: DevOps Engineer  
+**Автор**: DevOps Engineer Instocky  
 **Версия**: 1.0  
 **Дата**: 2025-06-03
