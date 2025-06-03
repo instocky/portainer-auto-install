@@ -125,7 +125,7 @@ update_system() {
     done
     
     # Проверка критически важных пакетов
-    local critical_packages=("curl" "gnupg" "lsb-release")
+    local critical_packages=("curl" "gpg" "lsb_release")
     for package in "${critical_packages[@]}"; do
         if ! command -v "$package" &> /dev/null; then
             log_error "Критически важный пакет $package не установлен"
